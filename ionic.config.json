@@ -1,0 +1,7 @@
+{
+  "name": "School360",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "react-vite"
+}
