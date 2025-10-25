@@ -41,7 +41,7 @@ const SummaryCard: React.FC = () => {
 						style={{ height: "55%" }}
 						className="inner--row--content-card">
 						<div className="media--inner-row">
-							<span className="media-voti">8</span>{" "}
+							<span className="media-voti">9</span>{" "}
 							{/* api call */}
 							<span className="tot-voti">/ 10</span>
 						</div>
