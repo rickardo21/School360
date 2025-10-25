@@ -1,0 +1,78 @@
+.floating-tab-bar {
+	position: absolute;
+	bottom: 20px; /* sposta la barra sopra il margine inferiore */
+	margin: 0 20px;
+	display: flex;
+	align-items: center;
+	padding: 10px 20px;
+	justify-content: center;
+	border-radius: 100vw;
+	background: rgba(255, 255, 255, 0.15);
+	backdrop-filter: blur(15px);
+	box-shadow: 0 4px 18px rgba(0, 0, 0, 0.2);
+	width: 80%;
+	border: none;
+	transition: all 0.3s ease;
+}
+
+/* Nasconde scrollbar mantenendo lo scroll funzionante */
+ion-content::part(scroll) {
+	scrollbar-width: none; /* Firefox */
+	-ms-overflow-style: none; /* IE e Edge */
+}
+
+ion-content {
+	--padding-bottom: 90px;
+}
+
+ion-content::part(scroll)::-webkit-scrollbar {
+	display: none; /* Chrome, Safari, Opera, Edge Chromium */
+	width: 0;
+	height: 0;
+}
+
+.floating-tab-bar ion-tab-button {
+	display: flex;
+	flex-direction: column;
+	justify-content: center; /* centra verticalmente */
+	align-items: center; /* centra orizzontalmente */
+	height: 100%;
+	padding: 0;
+}
+
+.floating-tab-bar ion-icon {
+	font-size: 28px; /* regola a piacere */
+	margin-bottom: 4px;
+}
+
+.floating-tab-bar ion-label {
+	font-size: 11px;
+	line-height: 1;
+	margin: 0;
+}
+
+.floating-tab-bar ion-tab-button {
+	/* --color: #777; */
+	background: transparent;
+	padding: 5px 0;
+}
+
+.floating-tab-bar ion-tab-button.tab-selected {
+	border-radius: 100vw;
+}
+
+ion-toolbar {
+	display: flex;
+	align-items: center;
+}
+
+ion-buttons {
+	display: flex;
+	align-items: center;
+}
+
+ion-button {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}

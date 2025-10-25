@@ -1,2 +1,44 @@
 /* For information on how to create your own theme, please see:
 http://ionicframework.com/docs/theming/ */
+
+:root {
+	--bg-color: #f0f0f0;
+	--accent-color: #000;
+	--main: #fff;
+	--card-color: #fff;
+}
+
+@media (prefers-color-scheme: dark) {
+	:root {
+		--bg-color: #1a1a1a;
+		--accent-color: #fff;
+		--main: #000;
+		--card-color: #1e1e1e;
+	}
+}
+
+ion-card {
+	--background: var(--card-color);
+}
+
+ion-content {
+	--background: var(--bg-color);
+}
+
+ion-app {
+	--background: var(--bg-color);
+}
+
+ion-header,
+ion-toolbar {
+	--background: var(--bg-color) !important;
+}
+
+ion-title {
+	--background: var(var(--bg-color));
+}
+
+ion-tab-bar {
+	--color-selected: var(--accent-color);
+	--background: var(--main);
+}

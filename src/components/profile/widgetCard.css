@@ -1,0 +1,18 @@
+.content--card-widget {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	width: 100%;
+	padding: 0 10px;
+}
+
+.content--card-widget span {
+	/* color: black; */
+	font-size: medium;
+	font-weight: 600;
+	text-transform: capitalize;
+}
+
+.card--widget {
+	margin: 5px 20px;
+}
