@@ -1,3 +1,4 @@
+/* SUMMARY CARD */
 :root {
 	--success-color: #37ca34;
 	--red: #ff4d4da2;
@@ -117,7 +118,6 @@
 }
 
 .last-mark--inner-row {
-	background: var(--red);
 	padding: 10px 20px;
 	border-radius: 12px;
 }
@@ -125,6 +125,7 @@
 .last-mark--inner-row .marks {
 	font-weight: bold;
 	margin-right: 5px;
+	text-transform: uppercase;
 }
 
 .last-mark--inner-row .subject {
@@ -140,4 +141,61 @@
 	font-size: 14px;
 	justify-content: center;
 	text-transform: capitalize;
+}
+
+/* WIDGET CARD */
+.content--card-widget {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	width: 100%;
+	padding: 0 10px;
+}
+
+.content--card-widget span {
+	/* color: black; */
+	font-size: medium;
+	font-weight: 600;
+	text-transform: capitalize;
+}
+
+.card--widget {
+	margin: 5px 20px;
+}
+
+/* PANORAMIC CARD */
+.card {
+	border-radius: 20px;
+}
+
+.card-content {
+	width: 100%;
+	padding: 10px;
+}
+
+.col {
+	display: flex;
+	align-items: start;
+	justify-content: center;
+	flex-direction: column;
+	gap: 6px;
+	padding: 10px 10px;
+}
+
+.col span {
+	text-transform: capitalize;
+	font-weight: 600;
+	font-size: 15px;
+}
+
+.col .bar {
+	width: 100%;
+	height: 8px;
+	border-radius: 100vw;
+	background: rgb(205, 205, 205, 0.2);
+}
+
+.col .bar .indicator--bar {
+	height: 100%;
+	border-radius: 100vw;
 }

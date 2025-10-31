@@ -1,6 +1,6 @@
 import { IonCard, IonCardContent, IonCol, IonGrid, IonRow } from "@ionic/react";
 
-import "./panoramicCard.css";
+import "../../pages/profile/ProfilePage.css";
 
 const PanoramicCard: React.FC = () => {
 	return (

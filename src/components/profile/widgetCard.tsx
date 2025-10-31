@@ -5,7 +5,7 @@ interface WidgetCardProps {
 	text: string;
 }
 
-import "./widgetCard.css";
+import "../../pages/profile/ProfilePage.css";
 
 const WidgetCard: React.FC<WidgetCardProps> = ({ text }) => {
 	return (

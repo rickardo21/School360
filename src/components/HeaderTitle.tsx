@@ -1,12 +1,4 @@
-import {
-	IonButton,
-	IonButtons,
-	IonHeader,
-	IonIcon,
-	IonTitle,
-	IonToolbar,
-} from "@ionic/react";
-import { calendarOutline } from "ionicons/icons";
+import { IonHeader, IonTitle, IonToolbar } from "@ionic/react";
 
 interface HeaderTitleProps {
 	title: string;
@@ -23,18 +15,6 @@ const HeaderTitle: React.FC<HeaderTitleProps> = ({ title, calendar }) => {
 					color={"medium"}>
 					{title}
 				</IonTitle>
-				{calendar && (
-					<IonButtons class="" slot="end">
-						<IonButton>
-							<IonIcon
-								slot="icon-only"
-								size="medium"
-								icon={calendarOutline}
-								aria-hidden={true}
-							/>
-						</IonButton>
-					</IonButtons>
-				)}
 			</IonToolbar>
 		</IonHeader>
 	);

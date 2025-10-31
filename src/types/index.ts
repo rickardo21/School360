@@ -60,7 +60,11 @@ export type User = {
 	ident: string;
 	firstName: string;
 	lastName: string;
-	class?: string;
+	class: string;
+	marksColor: string;
+	mediaVoti: number;
+	lastMarks: string;
+	lastSubject: string;
 	showPwdChangeReminder: boolean;
 	tokenAP: string;
 	token: string;

@@ -1,15 +1,8 @@
-import {
-	IonContent,
-	IonFab,
-	IonFabButton,
-	IonIcon,
-	IonPage,
-} from "@ionic/react";
+import { IonContent, IonPage } from "@ionic/react";
 import HeaderTitle from "../../components/HeaderTitle";
 import SummaryCard from "../../components/profile/summaryCard";
 import PanoramicCard from "../../components/profile/panoramicCard";
 import WidgetCard from "../../components/profile/widgetCard";
-import { cogOutline } from "ionicons/icons";
 
 const ProfilePage: React.FC = () => {
 	return (

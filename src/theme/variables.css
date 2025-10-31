@@ -21,11 +21,18 @@ ion-card {
 	--background: var(--card-color);
 }
 
-ion-content {
-	--background: var(--bg-color);
+.timeLineCard--container .line {
+	background: var(--bg-color);
+	color: var(--accent-color);
 }
 
-ion-app {
+ion-content {
+	--background: var(--bg-color);
+	--padding-bottom: 100px !important;
+}
+
+ion-app,
+ion-page {
 	--background: var(--bg-color);
 }
 
