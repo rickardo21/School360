@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import {
 	IonPage,
 	IonContent,
@@ -9,6 +9,7 @@ import {
 	IonToolbar,
 	IonButtons,
 	IonBackButton,
+	useIonViewWillLeave,
 } from "@ionic/react";
 
 import "./LoginPage.css";
@@ -21,21 +22,47 @@ const LoginPage: React.FC<LoginPageProps> = ({ onLogin }) => {
 	const [showPassInput, setShowPassInput] = useState(false);
 	const [username, setUsername] = useState("");
 	const [password, setPassword] = useState("");
+	const contentRef = useRef<HTMLIonContentElement>(null);
+
+	// Resetta tutto quando lasci la pagina
+	useIonViewWillLeave(() => {
+		// Blur tutti gli input per chiudere la tastiera
+		const inputs = document.querySelectorAll("input, textarea");
+		inputs.forEach((input) => (input as HTMLElement).blur());
+
+		// Resetta lo scroll
+		if (contentRef.current) {
+			contentRef.current.scrollToTop(0);
+		}
+
+		window.scrollTo(0, 0);
+		document.body.scrollTop = 0;
+		document.documentElement.scrollTop = 0;
+	});
 
 	function handleSubmit() {
-		if (!username || !password) {
-			return;
+		// Chiudi la tastiera prima di procedere
+		const activeElement = document.activeElement as HTMLElement;
+		if (activeElement) {
+			activeElement.blur();
 		}
 
 		console.log("Username:", username);
 		console.log("Password:", password);
 
-		onLogin();
+		// Piccolo delay per permettere alla tastiera di chiudersi completamente
+		setTimeout(() => {
+			onLogin();
+		}, 100);
 	}
 
 	return (
 		<IonPage>
-			<IonContent fullscreen={true}>
+			<IonContent
+				ref={contentRef}
+				className="login-content"
+				fullscreen={true}
+				scrollY={false}>
 				<IonToolbar>
 					<IonButtons slot="start">
 						<IonBackButton

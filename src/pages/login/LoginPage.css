@@ -3,15 +3,32 @@
 	align-items: center;
 	justify-content: center;
 	flex-direction: column;
-	height: 90%;
 	width: 100%;
-	padding-bottom: 120px;
-	overflow: hidden;
+	/* padding-bottom: 120px; */
+	/* overflow: hidden; */
 }
 
-ion-content {
-	--padding-bottom: 0px !important;
-	--overflow: hidden !important;
+/* LoginPage.css o nel tuo file CSS globale */
+
+.login-content {
+	--overflow: hidden;
+}
+
+.login-content::part(scroll) {
+	overflow: hidden !important;
+	overscroll-behavior: none;
+}
+
+/* Assicurati che il contenuto sia centrato e non overflow */
+ion-page.login-page {
+	display: flex;
+	flex-direction: column;
+	height: 100%;
+}
+
+ion-page.login-page ion-content {
+	--background: var(--color-background);
+	height: 100%;
 }
 
 .container-top {

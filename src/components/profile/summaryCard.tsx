@@ -40,7 +40,7 @@ const SummaryCard: React.FC = () => {
 	};
 
 	useEffect(() => {
-		getData();
+		// getData();
 	}, []);
 
 	return (
