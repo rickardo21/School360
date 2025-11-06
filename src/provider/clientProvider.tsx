@@ -18,7 +18,7 @@ interface LessonsData {
 
 class Client {
 	// private MAIN_URL = "http://192.168.1.104:3000/";
-	private MAIN_URL = "https://backendschool360.fly.dev";
+	private MAIN_URL = "https://backendschool360.fly.dev/";
 	public UserModel: User | null = null;
 
 	constructor() {
@@ -37,6 +37,8 @@ class Client {
 			"POST",
 			body
 		);
+
+		console.log("Login response:", response);
 
 		this.UserModel = response.data;
 
