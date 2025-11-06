@@ -1,24 +1,85 @@
+/* ==================== ADDITIONAL VARIABLES ==================== */
+
 /* For information on how to create your own theme, please see:
 http://ionicframework.com/docs/theming/ */
 
 :root {
-	/* Custom variables */
-	--bg-color: #f0f0f0;
-	--accent-color: #000;
-	--main: #fff;
-	--card-color: #fff;
+	/* iOS-style Color Variables - Light Mode */
+	--color-white: rgba(255, 255, 255, 1);
+	--color-gray-50: rgba(249, 249, 249, 1);
+	--color-gray-100: rgba(242, 242, 247, 1);
+	--color-gray-200: rgba(229, 229, 234, 1);
+	--color-gray-300: rgba(209, 209, 214, 1);
+	--color-gray-400: rgba(174, 174, 178, 1);
+	--color-gray-500: rgba(142, 142, 147, 1);
+	--color-gray-600: rgba(99, 99, 102, 1);
+	--color-gray-700: rgba(72, 72, 74, 1);
+	--color-gray-800: rgba(58, 58, 60, 1);
+	--color-gray-900: rgba(44, 44, 46, 1);
+	--color-blue: rgba(0, 122, 255, 1);
+	--color-blue-light: rgba(10, 132, 255, 1);
+	--color-green: rgba(52, 199, 89, 1);
+	--color-indigo: rgba(88, 86, 214, 1);
+	--shadow-modal: 0 10px 40px rgba(0, 0, 0, 0.15);
+	--radius-modal: 14px;
+	--radius-card: 10px;
+	--bg: rgba(242, 242, 247, 1);
+
+	--opposite: rgba(0, 0, 0, 1);
+
+	--bg-success: rgba(52, 199, 89, 0.1);
+	--color-success: rgba(52, 199, 89, 1);
+
+	/* Error - Light Mode */
+	--bg-error: rgba(255, 59, 48, 0.1);
+	--color-error: rgba(255, 59, 48, 1);
+
+	/* Custom variables mapped to iOS colors */
+	--bg-color: var(--bg);
+	--accent-color: var(--color-gray-900);
+	--main: var(--color-white);
+	--card-color: var(--color-white);
 
 	/* Ionic overrides */
 	--ion-background-color: var(--bg-color);
 	--ion-text-color: var(--accent-color);
+	/* --ion-font-family: var(--font-family-base); */
 }
 
 @media (prefers-color-scheme: dark) {
 	:root {
-		--bg-color: #1a1a1a;
-		--accent-color: #fff;
-		--main: #000;
-		--card-color: #1e1e1e;
+		/* iOS-style Color Variables - Dark Mode */
+		--color-white: rgba(28, 28, 30, 1);
+		--color-gray-50: rgba(44, 44, 46, 1);
+		--color-gray-100: rgba(58, 58, 60, 1);
+		--color-gray-200: rgba(72, 72, 74, 1);
+		--color-gray-300: rgba(99, 99, 102, 1);
+		--color-gray-400: rgba(142, 142, 147, 1);
+		--color-gray-500: rgba(174, 174, 178, 1);
+		--color-gray-600: rgba(209, 209, 214, 1);
+		--color-gray-700: rgba(229, 229, 234, 1);
+		--color-gray-800: rgba(242, 242, 247, 1);
+		--color-gray-900: rgba(249, 249, 249, 1);
+		--color-blue: rgba(10, 132, 255, 1);
+		--color-blue-light: rgba(64, 156, 255, 1);
+		--shadow-modal: 0 10px 40px rgba(0, 0, 0, 0.5);
+
+		--opposite: rgba(255, 255, 255, 1);
+
+		--bg: rgba(28, 28, 30, 1);
+
+		--bg-success: rgba(48, 209, 88, 0.15);
+		--color-success: rgba(48, 209, 88, 1);
+
+		/* Error - Dark Mode */
+		--bg-error: rgba(255, 69, 58, 0.15);
+		--color-error: rgba(255, 69, 58, 1);
+
+		/* Custom variables mapped to iOS dark colors */
+		--bg-color: var(--bg);
+		--accent-color: var(--color-gray-900);
+		--main: var(--color-gray-50);
+		--card-color: var(--color-gray-100);
 
 		/* Ionic overrides per dark mode */
 		--ion-background-color: var(--bg-color);
@@ -92,6 +153,16 @@ ion-header,
 ion-toolbar {
 	--background: var(--bg-color);
 	--color: var(--accent-color);
+	--border-color: var(--color-gray-200);
+}
+
+.toast-success {
+	--background: var(--bg-success);
+	--color: var(--color-success);
+}
+.toast-error {
+	--background: var(--bg-error);
+	--color: var(--color-error);
 }
 
 ion-title {
@@ -100,28 +171,118 @@ ion-title {
 
 /* Cards */
 ion-card {
-	--background: var(--card-color);
+	--background: var(--color-gray-50);
 	--color: var(--accent-color);
+	/* border-radius: var(--radius-card); */
+}
+
+ion-item {
+	--background: var(--color-gray-50);
+	--color: var(--accent-color);
+	--border-color: var(--color-gray-500);
+}
+
+.input {
+	background: var(--color-gray-50);
+	color: var(--accent-color);
+	/* border: 1px solid var(--color-gray-300); */
+	/* border-radius: 8px; */
+}
+
+.desc {
+	color: var(--color-gray-500);
+}
+
+.divider--hour .divider--hour-line {
+	background: var(--color-gray-500);
 }
 
 /* Tab Bar */
 ion-tab-bar {
 	--background: var(--main);
-	--color: var(--accent-color);
-	--color-selected: var(--accent-color);
+	--color: var(--color-gray-500);
+	--color-selected: var(--opposite);
+	border-top: 0.5px solid var(--color-gray-200);
 }
 
 ion-tab-button {
-	--color: var(--accent-color);
-	--color-selected: var(--accent-color);
+	--color: var(--color-gray-500);
+	--color-selected: var(--opposite);
+}
+
+ion-tab-button.tab-selected {
+	--color: var(--opposite);
 }
 
 /* ==================== CUSTOM COMPONENTS ==================== */
 
 /* Timeline Card */
 .timeLineCard--container .line {
-	background: var(--bg-color);
-	color: var(--accent-color);
+	background: var(--color-gray-300);
+}
+
+.timeLineCard {
+	background: var(--color-gray-50);
+	/* border-radius: var(--radius-card); */
+	/* box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08); */
+}
+
+/* Buttons iOS Style */
+ion-button {
+	/* --border-radius: var(--radius-card); */
+	/* font-weight: 600; */
+	text-transform: none;
+}
+
+ion-button.button-solid {
+	/* --background: var(--color-blue); */
+	/* --background-hover: var(--color-blue-light); */
+	--color: var(--color-white);
+}
+
+/* Nel tuo variables.css o global.css */
+ion-header[collapse="condense"] ion-toolbar {
+	display: flex;
+	align-items: center;
+}
+
+/* Se il font è troppo grande, riduci leggermente */
+ion-header[collapse="condense"] ion-title[size="large"] {
+	line-height: 1.2; /* Migliora l'allineamento */
+}
+
+/* Modal styling */
+/* ion-modal {
+	--border-radius: var(--radius-modal); 
+	 --box-shadow: var(--shadow-modal);
+} */
+
+/* ion-modal::part(backdrop) {
+	background: rgba(0, 0, 0, 0.4);
+	backdrop-filter: blur(10px);
+} */
+
+/* Badge styling */
+ion-badge {
+	border-radius: 6px;
+	/* font-weight: 600; */
+	font-size: 13px;
+	padding: 4px 10px;
+}
+
+ion-badge.badge-primary {
+	background: rgba(0, 122, 255, 0.1);
+	color: var(--color-blue);
+}
+
+ion-badge.badge-success {
+	background: rgba(52, 199, 89, 0.1);
+	color: var(--color-green);
+}
+
+ion-badge.badge-indigo {
+	background: rgba(88, 86, 214, 0.1);
+	color: var(--color-indigo);
 }
 
 /* ==================== KEYBOARD FIX ==================== */
@@ -152,11 +313,28 @@ ion-content::part(scroll) {
 	padding-bottom: env(safe-area-inset-bottom);
 }
 
+/* iOS-style section headers */
+.section-header {
+	font-size: 13px;
+	/* font-weight: 600; */
+	color: var(--color-gray-500);
+	text-transform: uppercase;
+	letter-spacing: 0.5px;
+	padding: 16px 20px 8px;
+}
+
+/* iOS-style dividers */
+.divider {
+	height: 0.5px;
+	background: var(--color-gray-200);
+	margin: 0 20px;
+}
+
 /* ==================== ACCESSIBILITY ==================== */
 
 /* Focus visible per accessibilità */
 *:focus-visible {
-	outline: 2px solid var(--accent-color);
+	outline: 2px solid var(--color-blue);
 	outline-offset: 2px;
 }
 
@@ -178,22 +356,20 @@ ion-content::part(scroll) {
 }
 
 ::-webkit-scrollbar-thumb {
-	background: rgba(0, 0, 0, 0.2);
+	background: var(--color-gray-300);
 	border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+	background: var(--color-gray-400);
 }
 
 @media (prefers-color-scheme: dark) {
 	::-webkit-scrollbar-thumb {
-		background: rgba(255, 255, 255, 0.2);
+		background: var(--color-gray-400);
 	}
-}
 
-::-webkit-scrollbar-thumb:hover {
-	background: rgba(0, 0, 0, 0.3);
-}
-
-@media (prefers-color-scheme: dark) {
 	::-webkit-scrollbar-thumb:hover {
-		background: rgba(255, 255, 255, 0.3);
+		background: var(--color-gray-500);
 	}
 }

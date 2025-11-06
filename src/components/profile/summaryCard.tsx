@@ -5,43 +5,15 @@ import { chevronForwardOutline } from "ionicons/icons";
 import avatar from "/avatar.png";
 
 import "../../pages/profile/ProfilePage.css";
-import { useState, useEffect } from "react";
+import { useState, useEffect, use } from "react";
 import { User } from "../../types";
+import { useClient } from "../../provider/clientProvider";
 
 const SummaryCard: React.FC = () => {
 	// const data = userDummyData;
 
-	const [data, setData] = useState<User | null>(null);
-
-	const getData = async () => {
-		try {
-			const response = await fetch(
-				"https://dirty-alyce-school360-90b98c54.koyeb.app/auth/login/",
-				{
-					method: "POST",
-					headers: {
-						"Content-Type": "application/json",
-						// "x-api-key": "roTIJIO0bf0VU5Z6LGJSWbPjlClW4eHg",
-					},
-					body: JSON.stringify({
-						ident: "S9477262T",
-						pass: "Rickardo@07",
-						app_code: "CVVS",
-					}),
-				}
-			);
-
-			const json = await response.json();
-
-			setData(json);
-		} catch (error) {
-			console.log("errore", error);
-		}
-	};
-
-	useEffect(() => {
-		// getData();
-	}, []);
+	const client = useClient();
+	const data: User | null = client.UserModel;
 
 	return (
 		<IonCard button={true} className="card">

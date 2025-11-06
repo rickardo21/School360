@@ -1,51 +1,122 @@
-import { IonContent, IonPage } from "@ionic/react";
+import {
+	IonCard,
+	IonContent,
+	IonHeader,
+	IonIcon,
+	IonItem,
+	IonLabel,
+	IonModal,
+	IonPage,
+	IonRefresher,
+	IonRefresherContent,
+	IonTitle,
+	IonToolbar,
+	useIonViewWillEnter,
+} from "@ionic/react";
 import "./TodayPage.css";
 import HeaderTitle from "../../components/HeaderTitle";
 import { Lesson, Lessons } from "../../types";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { LessonCard } from "../../components/today/lessonsCard";
+import { useClient } from "../../provider/clientProvider";
+import { timeOutline } from "ionicons/icons";
 
 const TodayPage: React.FC = () => {
+	const client = useClient();
+
 	const [data, setData] = useState<Lessons | null>(null);
+	const [loading, setLoading] = useState(true);
+	const [error, setError] = useState<string | null>(null);
 
 	const getData = async () => {
 		try {
-			const response = await fetch(
-				"https://dirty-alyce-school360-90b98c54.koyeb.app/lessons/",
-				{
-					method: "POST",
-					headers: {
-						"Content-Type": "application/json",
-						"auth-user-token":
-							"b4a78482a3bf7f602af4385b80e092e0AOGL5FeU5ghXCd4wTEH8jrjo7dcs/zpznF0qUaXgXuy2MmFG0hSa2DLiaReSWOfEzVH+/1/ZRxJUIczCvdAuOuNqV89mJkhqjdxj/Wmr8fgetKzLdsFlVuVEn9w8gEG7f7FTqIeS4ZmbBvbkjlq74uizmOhgJ8KFNYws08AV2ywoBHy+r+qtKZiuYSsZBHGQpv13Kl/c0/RgUoYnIRYh3mYvSsqAuFbqFLmlQiFYWO2p+9WhBZuZL0kSENExbwUahmzcK2lvmW5o/cBRkyMXWYcPwA9bTzmoeVMlNUALBGkCR8SC92BgUlf/CbvuzfN7364yK4iullQzW0tpJJiHmJdAu6qFYdQqD3iGVBxHUOMaN+iKxfaFxzGVYSnTkYmp/9/g",
-					},
-					body: JSON.stringify({
-						ident: "S9477262T",
-						date: "20251031",
-					}),
-				}
+			setLoading(true);
+			setError(null);
+
+			const today = new Date();
+			const dateString = today
+				.toISOString()
+				.split("T")[0]
+				.replace(/-/g, "");
+
+			const res = await client.lessons({ date: dateString });
+
+			if (res.status === 200) setData(res.data);
+		} catch (err: any) {
+			setError(
+				err.message || "Errore durante il caricamento delle lezioni"
 			);
-
-			if (!response.ok)
-				throw new Error(`HTTP error! Status: ${response.status}`);
-
-			const json = await response.json();
-			setData(json);
-		} catch (error) {
-			console.error("Errore nel fetch dati:", error);
+		} finally {
+			setLoading(false);
 		}
 	};
 
-	useEffect(() => {
+	useIonViewWillEnter(() => {
 		getData();
+	});
+
+	const modal = useRef<HTMLIonModalElement>(null);
+	const page = useRef(null);
+
+	const [presentingElement, setPresentingElement] =
+		useState<HTMLElement | null>(null);
+
+	useEffect(() => {
+		setPresentingElement(page.current);
 	}, []);
 
-	var ore = 7;
-	var lastOurPos = 0;
+	const formatDate = (dateString: string) => {
+		const date = new Date(dateString);
+		return date.toLocaleDateString("it-IT", {
+			day: "numeric",
+			month: "long",
+			year: "numeric",
+		});
+	};
+
+	const handleRefresh = async (event: CustomEvent) => {
+		await getData();
+		event.detail.complete();
+	};
+
+	if (loading) {
+		return (
+			<IonPage>
+				<HeaderTitle title="Today" hasModal={true} />
+				<IonContent fullscreen>
+					<div className="ion-padding ion-text-center">
+						<p>Caricamento lezioni...</p>
+					</div>
+				</IonContent>
+			</IonPage>
+		);
+	}
+
+	if (error) {
+		return (
+			<IonPage>
+				<HeaderTitle title="Today" />
+				<IonContent fullscreen>
+					<IonRefresher slot="fixed" onIonRefresh={handleRefresh}>
+						<IonRefresherContent></IonRefresherContent>
+					</IonRefresher>
+					<div className="ion-padding ion-text-center">
+						<p style={{ color: "var(--ion-color-danger)" }}>
+							{error}
+						</p>
+						<button onClick={getData}>Riprova</button>
+					</div>
+				</IonContent>
+			</IonPage>
+		);
+	}
+
+	let ore = 7;
+	let lastOurPos = 0;
 
 	return (
-		<IonPage>
-			<HeaderTitle title="Today" calendar={true} />
+		<IonPage ref={page}>
+			<HeaderTitle title="Today" />
 			<IonContent fullscreen>
 				<div className="timeLine">
 					{data?.lessons?.map((item: Lesson, index) => {
@@ -56,13 +127,114 @@ const TodayPage: React.FC = () => {
 							ore += item.evtDuration;
 							hasHour = true;
 						}
+
 						return (
-							<LessonCard
-								index={index}
-								item={item}
-								hasHour={hasHour}
-								hour={ore}
-							/>
+							<div style={{ width: "100%" }} key={index}>
+								{hasHour && (
+									<div className="divider--hour">
+										<span>{ore}:00</span>
+										<div className="divider--hour-line"></div>
+									</div>
+								)}
+								<LessonCard
+									index={index}
+									item={item}
+									hasHour={hasHour}
+									hour={ore}
+								/>
+								<IonModal
+									ref={modal}
+									trigger={`open-modal-${index}`}
+									presentingElement={presentingElement!}
+									handleBehavior="cycle">
+									<IonHeader>
+										<IonToolbar>
+											<IonTitle>
+												Dettagli Lezione
+											</IonTitle>
+										</IonToolbar>
+									</IonHeader>
+
+									<IonContent className="ion-padding">
+										<div className="info-card">
+											<div className="info-row">
+												<span className="info-label">
+													Materia
+												</span>
+												<span className="info-value">
+													{item.subjectDesc}
+												</span>
+											</div>
+											<div className="info-row">
+												<span className="info-label">
+													Classe
+												</span>
+												<span className="info-value">
+													<span className="badge badge-indigo">
+														{item.classDesc}
+													</span>
+												</span>
+											</div>
+											<div className="info-row">
+												<span className="info-label">
+													Docente
+												</span>
+												<span className="info-value">
+													Prof. {item.authorName}
+												</span>
+											</div>
+										</div>
+										<div className="info-card">
+											<div className="info-row">
+												<span className="info-label">
+													Data
+												</span>
+												<span className="info-value">
+													{formatDate(item.evtDate)}
+												</span>
+											</div>
+											<div className="info-row">
+												<span className="info-label">
+													Ora
+												</span>
+												<span className="info-value time-badge">
+													<IonIcon
+														ios={timeOutline}
+													/>
+													{item.evtHPos}ª ora
+												</span>
+											</div>
+											<div className="info-row">
+												<span className="info-label">
+													Durata
+												</span>
+												<span className="info-value">
+													{item.evtDuration} ora
+												</span>
+											</div>
+											<div className="info-row">
+												<span className="info-label">
+													Tipo
+												</span>
+												<span className="info-value">
+													<span className="badge badge-success">
+														{item.lessonType}
+													</span>
+												</span>
+											</div>
+										</div>
+
+										<p className="section-title">
+											Argomento della lezione
+										</p>
+										<div className="lesson-description">
+											<p className="lesson-description-text">
+												{item.lessonArg}
+											</p>
+										</div>
+									</IonContent>
+								</IonModal>
+							</div>
 						);
 					})}
 				</div>

@@ -1,36 +1,39 @@
 import React, { useState, useRef } from "react";
+import { useHistory } from "react-router-dom";
 import {
 	IonPage,
 	IonContent,
 	IonInput,
-	IonItem,
 	IonButton,
-	IonHeader,
-	IonToolbar,
-	IonButtons,
-	IonBackButton,
 	useIonViewWillLeave,
+	IonToast,
+	IonSpinner,
 } from "@ionic/react";
 
 import "./LoginPage.css";
+import { useClient } from "../../provider/clientProvider";
 
 interface LoginPageProps {
 	onLogin: () => void;
 }
 
 const LoginPage: React.FC<LoginPageProps> = ({ onLogin }) => {
-	const [showPassInput, setShowPassInput] = useState(false);
 	const [username, setUsername] = useState("");
 	const [password, setPassword] = useState("");
+	const [loading, setLoading] = useState(false);
 	const contentRef = useRef<HTMLIonContentElement>(null);
+
+	const [toastMessage, setToastMessage] = useState("");
+	const [isOpen, setIsOpen] = useState(false);
+
+	const client = useClient();
+	const history = useHistory();
 
 	// Resetta tutto quando lasci la pagina
 	useIonViewWillLeave(() => {
-		// Blur tutti gli input per chiudere la tastiera
 		const inputs = document.querySelectorAll("input, textarea");
 		inputs.forEach((input) => (input as HTMLElement).blur());
 
-		// Resetta lo scroll
 		if (contentRef.current) {
 			contentRef.current.scrollToTop(0);
 		}
@@ -40,21 +43,49 @@ const LoginPage: React.FC<LoginPageProps> = ({ onLogin }) => {
 		document.documentElement.scrollTop = 0;
 	});
 
-	function handleSubmit() {
-		// Chiudi la tastiera prima di procedere
+	const handleSubmit = async () => {
+		// Chiudi la tastiera
 		const activeElement = document.activeElement as HTMLElement;
 		if (activeElement) {
 			activeElement.blur();
 		}
 
-		console.log("Username:", username);
-		console.log("Password:", password);
+		// Validazione
+		if (!username || !password) {
+			setToastMessage("Compila tutti i campi!");
+			setIsOpen(true);
+			return;
+		}
 
-		// Piccolo delay per permettere alla tastiera di chiudersi completamente
-		setTimeout(() => {
-			onLogin();
-		}, 100);
-	}
+		try {
+			setLoading(true);
+
+			const res = await client.login({
+				username: username,
+				password: password,
+			});
+
+			// Login riuscito
+			setToastMessage(
+				"Account " +
+					client.UserModel?.firstName +
+					" " +
+					client.UserModel?.lastName
+			);
+			setIsOpen(true);
+
+			setTimeout(() => {
+				onLogin();
+				history.replace("/TodayPage"); // ✅ Forza il redirect
+			}, 500);
+		} catch (error: any) {
+			// Mostra il messaggio di errore dal server
+			setToastMessage("Errore durante il login");
+			setIsOpen(true);
+		} finally {
+			setLoading(false);
+		}
+	};
 
 	return (
 		<IonPage>
@@ -63,14 +94,6 @@ const LoginPage: React.FC<LoginPageProps> = ({ onLogin }) => {
 				className="login-content"
 				fullscreen={true}
 				scrollY={false}>
-				<IonToolbar>
-					<IonButtons slot="start">
-						<IonBackButton
-							color={"dark"}
-							defaultHref="#"></IonBackButton>
-					</IonButtons>
-				</IonToolbar>
-
 				<div className="content">
 					<div className="container-top">
 						<span className="title">School360</span>
@@ -78,14 +101,15 @@ const LoginPage: React.FC<LoginPageProps> = ({ onLogin }) => {
 					<div className="input-group">
 						<IonInput
 							onIonChange={(e: any) => {
-								console.log(e.detail.value);
 								setUsername(e.detail.value);
 							}}
 							className="input"
 							value={username}
 							type="text"
 							placeholder="Username"
-							id="username"></IonInput>
+							disabled={loading}
+							id="username"
+						/>
 
 						<IonInput
 							onIonChange={(e: any) => {
@@ -94,18 +118,34 @@ const LoginPage: React.FC<LoginPageProps> = ({ onLogin }) => {
 							className="input"
 							type="password"
 							placeholder="Password"
-							id="password"></IonInput>
+							disabled={loading}
+							id="password"
+							onKeyDown={(e) => {
+								if (e.key === "Enter") {
+									handleSubmit();
+								}
+							}}
+						/>
 					</div>
 
 					<IonButton
-						onClick={() => {
-							handleSubmit();
-						}}
+						onClick={handleSubmit}
 						color={"dark"}
 						className="button"
-						expand="block"
+						expand="full"
+						disabled={loading}
 						id="submitBtn">
-						Accedi
+						{loading ? (
+							<>
+								<IonSpinner
+									name="crescent"
+									style={{ marginRight: "8px" }}
+								/>
+								Accesso in corso...
+							</>
+						) : (
+							"Accedi"
+						)}
 					</IonButton>
 
 					<div className="divider"></div>
@@ -115,6 +155,17 @@ const LoginPage: React.FC<LoginPageProps> = ({ onLogin }) => {
 						<span className="desc-sp">spaggiari</span>
 					</span>
 				</div>
+				<IonToast
+					isOpen={isOpen}
+					message={toastMessage}
+					onDidDismiss={() => setIsOpen(false)}
+					duration={3000}
+					className={
+						toastMessage.includes("Account")
+							? "toast-success"
+							: "toast-error"
+					}
+				/>
 			</IonContent>
 		</IonPage>
 	);

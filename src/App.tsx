@@ -17,6 +17,7 @@ import TodayPage from "./pages/today/TodayPage";
 import ProfilePage from "./pages/profile/ProfilePage";
 import TimeTablePage from "./pages/timetable/TimeTablePage";
 import SettingsPage from "./pages/settings/SettingsPage";
+import LoginPage from "./pages/login/LoginPage";
 
 /* Core CSS required for Ionic components to work properly */
 import "@ionic/react/css/core.css";
@@ -35,36 +36,41 @@ import "@ionic/react/css/flex-utils.css";
 import "@ionic/react/css/display.css";
 
 /* Icons import */
-import { cogOutline, libraryOutline, newspaperOutline } from "ionicons/icons";
-import { personOutline } from "ionicons/icons";
+import {
+	cogOutline,
+	libraryOutline,
+	newspaperOutline,
+	personOutline,
+} from "ionicons/icons";
 
-/**
- * Ionic Dark Mode
- * -----------------------------------------------------
- * For more info, please see:
- * https://ionicframework.com/docs/theming/dark-mode
- */
-
-/* import '@ionic/react/css/palettes/dark.always.css'; */
-/* import '@ionic/react/css/palettes/dark.class.css'; */
+/* Ionic Dark Mode */
 import "@ionic/react/css/palettes/dark.system.css";
 
 /* Theme variables */
 import "./theme/variables.css";
-import IntroPage from "./pages/intro/IntroPage";
-import LoginPage from "./pages/login/LoginPage";
+import { ClientProvider } from "./provider/clientProvider";
 
 setupIonicReact();
 
 const App: React.FC = () => {
-	const [showIntro, setShowIntro] = useState(false);
+	const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+	const handleLogin = () => {
+		setIsAuthenticated(true);
+		// ✅ Forza il redirect a /today
+		// window.location.href = "/TodayPage";
+	};
 
 	useEffect(() => {
-		const token = "";
-
-		if (token) {
-			setShowIntro(false);
-		}
+		// Controlla se c'è un token salvato
+		const checkAuth = async () => {
+			// Se hai salvato il token con Preferences:
+			// const { value } = await Preferences.get({ key: 'user' });
+			// if (value) {
+			//     setIsAuthenticated(true);
+			// }
+		};
+		checkAuth();
 	}, []);
 
 	useEffect(() => {
@@ -79,75 +85,89 @@ const App: React.FC = () => {
 		}
 	}, []);
 
-	// if (showIntro) {
-	// 	return (
-	// 		<IntroPage
-	// 			onFinishIntro={() => {
-	// 				setShowIntro(false);
-	// 			}}
-	// 		/>
-	// 	);
-	// }
-
 	return (
 		<IonApp>
-			<IonReactRouter>
-				<IonTabs>
-					<IonRouterOutlet>
-						<Route exact path="/TodayPage">
-							<TodayPage />
-						</Route>
-						<Route exact path="/ProfilePage">
-							<ProfilePage />
-						</Route>
-						<Route path="/TimeTablePage">
-							<TimeTablePage />
-						</Route>
-						<Route path="/SettingsPage">
-							<SettingsPage />
-						</Route>
-						<Route exact path="/">
-							<Redirect to="/LoginPage" />
-						</Route>
-					</IonRouterOutlet>
-
-					{showIntro ? (
-						<Tabs />
+			<ClientProvider>
+				<IonReactRouter>
+					{!isAuthenticated ? (
+						// ✅ LoginPage FUORI dalle tabs
+						<IonRouterOutlet>
+							<Route exact path="/LoginPage">
+								<LoginPage onLogin={handleLogin} />
+							</Route>
+							<Route exact path="/">
+								<Redirect to="/LoginPage" />
+							</Route>
+						</IonRouterOutlet>
 					) : (
-						<LoginPage
-							onLogin={() => {
-								setShowIntro(true);
-							}}
-						/>
+						// ✅ Tabs SOLO quando sei autenticato
+						<IonTabs>
+							<IonRouterOutlet>
+								<Route exact path="/TodayPage">
+									<TodayPage />
+								</Route>
+								<Route exact path="/ProfilePage">
+									<ProfilePage />
+								</Route>
+								<Route exact path="/TimeTablePage">
+									<TimeTablePage />
+								</Route>
+								<Route exact path="/SettingsPage">
+									<SettingsPage />
+								</Route>
+								{/* ✅ Redirect alla prima tab */}
+								<Route exact path="/">
+									<Redirect to="/TodayPage" />
+								</Route>
+							</IonRouterOutlet>
+
+							<IonTabBar
+								className="floating-tab-bar"
+								slot="bottom">
+								<IonTabButton
+									className="tab-bar-item"
+									tab="TodayPage"
+									href="/TodayPage">
+									<IonIcon
+										ios={newspaperOutline}
+										aria-hidden="true"
+									/>
+									<IonLabel>Today</IonLabel>
+								</IonTabButton>
+								<IonTabButton
+									tab="ProfilePage"
+									href="/ProfilePage">
+									<IonIcon
+										ios={personOutline}
+										aria-hidden="true"
+									/>
+									<IonLabel>Profile</IonLabel>
+								</IonTabButton>
+								<IonTabButton
+									tab="TimeTablePage"
+									href="/TimeTablePage">
+									<IonIcon
+										ios={libraryOutline}
+										aria-hidden="true"
+									/>
+									<IonLabel>TimeTable</IonLabel>
+								</IonTabButton>
+								<IonTabButton
+									tab="SettingsPage"
+									href="/SettingsPage">
+									<IonIcon
+										ios={cogOutline}
+										aria-hidden="true"
+									/>
+									<IonLabel>Settings</IonLabel>
+								</IonTabButton>
+							</IonTabBar>
+						</IonTabs>
 					)}
-				</IonTabs>
-			</IonReactRouter>
+				</IonReactRouter>
+			</ClientProvider>
 		</IonApp>
 	);
 };
 
 export default App;
-
-const Tabs: React.FC = () => (
-	<IonTabBar className="floating-tab-bar" slot="bottom">
-		<IonTabButton
-			className="tab-bar-item"
-			tab="TodayPage"
-			href="/TodayPage">
-			<IonIcon ios={newspaperOutline} aria-hidden="true" />
-			<IonLabel>Today</IonLabel>
-		</IonTabButton>
-		<IonTabButton tab="ProfilePage" href="/ProfilePage">
-			<IonIcon ios={personOutline} aria-hidden="true" />
-			<IonLabel>Profile</IonLabel>
-		</IonTabButton>
-		<IonTabButton tab="TimeTablePage" href="/TimeTablePage">
-			<IonIcon ios={libraryOutline} aria-hidden="true" />
-			<IonLabel>TimeTable</IonLabel>
-		</IonTabButton>
-		<IonTabButton tab="SettingsPage" href="/SettingsPage">
-			<IonIcon ios={cogOutline} aria-hidden="true" />
-			<IonLabel>Setting</IonLabel>
-		</IonTabButton>
-	</IonTabBar>
-);
