@@ -17,16 +17,6 @@ interface HeaderProps {
 }
 
 const HeaderTitle: React.FC<HeaderProps> = ({ title, hasModal }) => {
-	const modal = useRef<HTMLIonModalElement>(null);
-	const page = useRef(null);
-
-	const [presentingElement, setPresentingElement] =
-		useState<HTMLElement | null>(null);
-
-	useEffect(() => {
-		setPresentingElement(page.current);
-	}, []);
-
 	return (
 		<>
 			<IonHeader collapse="condense">
@@ -47,19 +37,6 @@ const HeaderTitle: React.FC<HeaderProps> = ({ title, hasModal }) => {
 				</IonToolbar>
 			</IonHeader>
 			{/* modal da rivedere */}
-			<IonModal
-				ref={modal}
-				trigger={`modalOpener`}
-				presentingElement={presentingElement!}
-				handleBehavior="cycle">
-				<IonHeader>
-					<IonToolbar>
-						<IonTitle>Dettagli Lezione</IonTitle>
-					</IonToolbar>
-				</IonHeader>
-
-				<IonContent className="ion-padding"></IonContent>
-			</IonModal>
 		</>
 	);
 };

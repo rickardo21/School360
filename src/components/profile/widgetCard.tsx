@@ -9,19 +9,14 @@ import "../../pages/profile/ProfilePage.css";
 
 const WidgetCard: React.FC<WidgetCardProps> = ({ text }) => {
 	return (
-		<div className="card--container">
-			<IonCard button={true} className="card card--widget">
-				<IonCardContent>
-					<div className="content--card-widget">
-						<span>{text}</span>
-						<IonIcon
-							ios={chevronForwardOutline}
-							aria-hidden={true}
-						/>
-					</div>
-				</IonCardContent>
-			</IonCard>
-		</div>
+		<IonCard button={true} className="card card--widget">
+			<IonCardContent>
+				<div className="content--card-widget">
+					<span>{text}</span>
+					<IonIcon ios={chevronForwardOutline} aria-hidden={true} />
+				</div>
+			</IonCardContent>
+		</IonCard>
 	);
 };
 

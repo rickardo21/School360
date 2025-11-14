@@ -18,6 +18,7 @@ import ProfilePage from "./pages/profile/ProfilePage";
 import TimeTablePage from "./pages/timetable/TimeTablePage";
 import SettingsPage from "./pages/settings/SettingsPage";
 import LoginPage from "./pages/login/LoginPage";
+import GradePage from "./pages/profile/GradePage";
 
 /* Core CSS required for Ionic components to work properly */
 import "@ionic/react/css/core.css";
@@ -114,6 +115,9 @@ const App: React.FC = () => {
 								</Route>
 								<Route exact path="/SettingsPage">
 									<SettingsPage />
+								</Route>
+								<Route exact path="/GradePage">
+									<GradePage />
 								</Route>
 								{/* ✅ Redirect alla prima tab */}
 								<Route exact path="/">

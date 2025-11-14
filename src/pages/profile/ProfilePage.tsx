@@ -14,11 +14,11 @@ const ProfilePage: React.FC = () => {
 				<div
 					style={{ paddingBottom: "20px" }}
 					className="card--container">
-					<WidgetCard text="colloqui" />
-					<WidgetCard text="Agenda" />
-					<WidgetCard text="scrutini" />
-					<WidgetCard text="note" />
-					<WidgetCard text="classeviva web" />
+					<WidgetCard text="Compiti" />
+					<WidgetCard text="Bacheca" />
+					<WidgetCard text="Note" />
+					<WidgetCard text="Colloqui" />
+					<WidgetCard text="Scrutini" />
 				</div>
 			</IonContent>
 		</IonPage>

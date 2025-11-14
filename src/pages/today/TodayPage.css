@@ -160,6 +160,37 @@
 	}
 }
 
+.user-status {
+	padding: 10px 20px;
+	text-transform: capitalize;
+}
+
+.badge-Ritardi {
+	background: rgb(196, 81, 81);
+	color: red;
+}
+
+.badge-Assente {
+	background: rgb(255, 171, 171);
+	color: rgb(177, 5, 5);
+}
+
+.badge-Uscita {
+	background: rgb(202, 47, 47);
+	color: red;
+}
+
+.no-lesson {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 100%;
+	padding: 20px;
+	text-transform: capitalize;
+	font-weight: 500;
+	opacity: 0.5;
+}
+
 .info-card {
 	background: var(--color-gray-50);
 	border-radius: var(--radius-card);
@@ -230,7 +261,7 @@
 	display: inline-flex;
 	align-items: center;
 	padding: 4px 10px;
-	border-radius: 6px;
+	border-radius: 12px;
 	font-size: 13px;
 	font-weight: 600;
 }

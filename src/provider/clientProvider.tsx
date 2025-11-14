@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useMemo, ReactNode } from "react";
-import { Lessons, User } from "../types";
+import { Absences, Grades, Lessons, User, UserModelFullOfInfo } from "../types";
 
 interface ApiResponse<T> {
 	data: T;
@@ -11,53 +11,62 @@ interface LoginData {
 	password: string;
 }
 
-interface LessonsData {
-	date?: string;
-	classId?: string;
-}
-
 class Client {
-	// private MAIN_URL = "http://192.168.1.104:3000/";
+	// private MAIN_URL = "http://192.168.1.104:8080/";
 	private MAIN_URL = "https://backendschool360.fly.dev/";
-	public UserModel: User | null = null;
+	public UserModel: UserModelFullOfInfo | null = null;
 
 	constructor() {
 		this.UserModel = null;
 	}
 
-	public async login(data: LoginData): Promise<ApiResponse<User>> {
+	public async login(data: LoginData) {
 		const body = {
 			ident: data.username,
 			pass: data.password,
 			app_code: "CVVS",
 		};
 
-		const response = await this.sendRequest<ApiResponse<User>>(
-			"auth/login/",
-			"POST",
-			body
-		);
-
-		console.log("Login response:", response);
+		const response = await this.sendRequest<
+			ApiResponse<UserModelFullOfInfo>
+		>("getAll", "POST", body);
 
 		this.UserModel = response.data;
+
+		console.log("user model = " + this.UserModel);
 
 		return response;
 	}
 
-	public async lessons(data?: LessonsData): Promise<ApiResponse<Lessons>> {
-		const body = {
-			...data,
-			ident: this.UserModel?.ident,
-		};
-
-		const lessons = await this.sendRequest<ApiResponse<Lessons>>(
-			"lessons",
-			"POST",
-			body
+	public async getGrades() {
+		const grade = await this.sendRequest<Grades>(
+			`grades?ident=${this.UserModel?.user.ident.substring(1)}`,
+			"GET"
 		);
 
-		return lessons;
+		this.UserModel!.grades = grade;
+	}
+
+	public async getAbsence(date?: string) {
+		const absence = await this.sendRequest<Absences>(
+			`assenze?ident=${this.UserModel?.user.ident.substring(1)}${
+				date ? `&date=${date}/` : ""
+			}`,
+			"GET"
+		);
+
+		this.UserModel!.absence = absence;
+	}
+
+	public async getLessons(date: string) {
+		const lessons = await this.sendRequest<Lessons>(
+			`lessons?ident=${this.UserModel?.user.ident.substring(
+				1
+			)}&date=${date}/`,
+			"GET"
+		);
+
+		this.UserModel!.lessons = lessons;
 	}
 
 	private async sendRequest<T>(
@@ -65,7 +74,7 @@ class Client {
 		method: string,
 		body?: any
 	): Promise<T> {
-		const token = this.UserModel?.token || null;
+		const token = this.UserModel?.user.token || null;
 
 		const headers: HeadersInit = {
 			"Content-Type": "application/json",

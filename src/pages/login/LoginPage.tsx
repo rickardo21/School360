@@ -65,12 +65,15 @@ const LoginPage: React.FC<LoginPageProps> = ({ onLogin }) => {
 				password: password,
 			});
 
+			console.log("res: " + res);
+			console.log("user: " + client.UserModel?.user);
+
 			// Login riuscito
 			setToastMessage(
 				"Account " +
-					client.UserModel?.firstName +
+					client.UserModel?.user.firstName +
 					" " +
-					client.UserModel?.lastName
+					client.UserModel?.user.lastName
 			);
 			setIsOpen(true);
 

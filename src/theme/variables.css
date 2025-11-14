@@ -22,7 +22,7 @@ http://ionicframework.com/docs/theming/ */
 	--color-indigo: rgba(88, 86, 214, 1);
 	--shadow-modal: 0 10px 40px rgba(0, 0, 0, 0.15);
 	--radius-modal: 14px;
-	--radius-card: 10px;
+	--radius-card: 12px;
 	--bg: rgba(242, 242, 247, 1);
 
 	--opposite: rgba(0, 0, 0, 1);
@@ -153,7 +153,7 @@ ion-header,
 ion-toolbar {
 	--background: var(--bg-color);
 	--color: var(--accent-color);
-	--border-color: var(--color-gray-200);
+	--border-color: var(--bg-color);
 }
 
 .toast-success {
@@ -166,6 +166,7 @@ ion-toolbar {
 }
 
 ion-title {
+	--background: var(--bg-color);
 	--color: var(--accent-color);
 }
 
@@ -173,7 +174,12 @@ ion-title {
 ion-card {
 	--background: var(--color-gray-50);
 	--color: var(--accent-color);
-	/* border-radius: var(--radius-card); */
+	border-radius: var(--radius-card);
+}
+
+.grade-card {
+	background: var(--color-gray-50);
+	border-radius: var(--radius-card);
 }
 
 ion-item {
@@ -186,7 +192,7 @@ ion-item {
 	background: var(--color-gray-50);
 	color: var(--accent-color);
 	/* border: 1px solid var(--color-gray-300); */
-	/* border-radius: 8px; */
+	border-radius: var(--radius-card);
 }
 
 .desc {
@@ -264,7 +270,7 @@ ion-header[collapse="condense"] ion-title[size="large"] {
 
 /* Badge styling */
 ion-badge {
-	border-radius: 6px;
+	border-radius: var(--radius-card);
 	/* font-weight: 600; */
 	font-size: 13px;
 	padding: 4px 10px;
