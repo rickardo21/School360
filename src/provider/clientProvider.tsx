@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useMemo, ReactNode } from "react";
 import { Absences, Grades, Lessons, User, UserModelFullOfInfo } from "../types";
+import { Storage } from "@ionic/storage";
 
 interface ApiResponse<T> {
 	data: T;
@@ -20,6 +21,10 @@ class Client {
 		this.UserModel = null;
 	}
 
+	public setUserModel(data: UserModelFullOfInfo) {
+		this.UserModel = data;
+	}
+
 	public async login(data: LoginData) {
 		const body = {
 			ident: data.username,
@@ -27,15 +32,18 @@ class Client {
 			app_code: "CVVS",
 		};
 
+		const store = new Storage();
+		await store.create();
+
 		const response = await this.sendRequest<
 			ApiResponse<UserModelFullOfInfo>
 		>("getAll", "POST", body);
 
 		this.UserModel = response.data;
 
-		console.log("user model = " + this.UserModel);
+		store.set("storedUser", response.data);
 
-		return response;
+		// return response;
 	}
 
 	public async getGrades() {

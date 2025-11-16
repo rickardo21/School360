@@ -49,125 +49,21 @@ import "@ionic/react/css/palettes/dark.system.css";
 
 /* Theme variables */
 import "./theme/variables.css";
-import { ClientProvider } from "./provider/clientProvider";
+
+import { Storage } from "@ionic/storage";
+import { ClientProvider, useClient } from "./provider/clientProvider";
+import { UserModelFullOfInfo } from "./types";
+import { calcolaMinutiMancanti } from "./utils/utils";
+import AppController from "./AppController";
 
 setupIonicReact();
 
 const App: React.FC = () => {
-	const [isAuthenticated, setIsAuthenticated] = useState(false);
-
-	const handleLogin = () => {
-		setIsAuthenticated(true);
-		// ✅ Forza il redirect a /today
-		// window.location.href = "/TodayPage";
-	};
-
-	useEffect(() => {
-		// Controlla se c'è un token salvato
-		const checkAuth = async () => {
-			// Se hai salvato il token con Preferences:
-			// const { value } = await Preferences.get({ key: 'user' });
-			// if (value) {
-			//     setIsAuthenticated(true);
-			// }
-		};
-		checkAuth();
-	}, []);
-
-	useEffect(() => {
-		const color = window.matchMedia("(prefers-color-scheme: dark)").matches
-			? "#1a1a1a"
-			: "#f0f0f0";
-		const metaThemeColor = document.querySelector(
-			'meta[name="theme-color"]'
-		);
-		if (metaThemeColor) {
-			metaThemeColor.setAttribute("content", color);
-		}
-	}, []);
-
 	return (
 		<IonApp>
 			<ClientProvider>
 				<IonReactRouter>
-					{!isAuthenticated ? (
-						// ✅ LoginPage FUORI dalle tabs
-						<IonRouterOutlet>
-							<Route exact path="/LoginPage">
-								<LoginPage onLogin={handleLogin} />
-							</Route>
-							<Route exact path="/">
-								<Redirect to="/LoginPage" />
-							</Route>
-						</IonRouterOutlet>
-					) : (
-						// ✅ Tabs SOLO quando sei autenticato
-						<IonTabs>
-							<IonRouterOutlet>
-								<Route exact path="/TodayPage">
-									<TodayPage />
-								</Route>
-								<Route exact path="/ProfilePage">
-									<ProfilePage />
-								</Route>
-								<Route exact path="/TimeTablePage">
-									<TimeTablePage />
-								</Route>
-								<Route exact path="/SettingsPage">
-									<SettingsPage />
-								</Route>
-								<Route exact path="/GradePage">
-									<GradePage />
-								</Route>
-								{/* ✅ Redirect alla prima tab */}
-								<Route exact path="/">
-									<Redirect to="/TodayPage" />
-								</Route>
-							</IonRouterOutlet>
-
-							<IonTabBar
-								className="floating-tab-bar"
-								slot="bottom">
-								<IonTabButton
-									className="tab-bar-item"
-									tab="TodayPage"
-									href="/TodayPage">
-									<IonIcon
-										ios={newspaperOutline}
-										aria-hidden="true"
-									/>
-									<IonLabel>Today</IonLabel>
-								</IonTabButton>
-								<IonTabButton
-									tab="ProfilePage"
-									href="/ProfilePage">
-									<IonIcon
-										ios={personOutline}
-										aria-hidden="true"
-									/>
-									<IonLabel>Profile</IonLabel>
-								</IonTabButton>
-								<IonTabButton
-									tab="TimeTablePage"
-									href="/TimeTablePage">
-									<IonIcon
-										ios={libraryOutline}
-										aria-hidden="true"
-									/>
-									<IonLabel>TimeTable</IonLabel>
-								</IonTabButton>
-								<IonTabButton
-									tab="SettingsPage"
-									href="/SettingsPage">
-									<IonIcon
-										ios={cogOutline}
-										aria-hidden="true"
-									/>
-									<IonLabel>Settings</IonLabel>
-								</IonTabButton>
-							</IonTabBar>
-						</IonTabs>
-					)}
+					<AppController />
 				</IonReactRouter>
 			</ClientProvider>
 		</IonApp>

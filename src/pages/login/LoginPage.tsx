@@ -27,7 +27,6 @@ const LoginPage: React.FC<LoginPageProps> = ({ onLogin }) => {
 	const [isOpen, setIsOpen] = useState(false);
 
 	const client = useClient();
-	const history = useHistory();
 
 	// Resetta tutto quando lasci la pagina
 	useIonViewWillLeave(() => {
@@ -79,7 +78,6 @@ const LoginPage: React.FC<LoginPageProps> = ({ onLogin }) => {
 
 			setTimeout(() => {
 				onLogin();
-				history.replace("/TodayPage"); // ✅ Forza il redirect
 			}, 500);
 		} catch (error: any) {
 			// Mostra il messaggio di errore dal server

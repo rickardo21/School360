@@ -18,6 +18,15 @@ export function calcolaMedia(gradesData: Grades): number {
 	return Math.round((somma / votiValidi.length) * 10) / 10;
 }
 
+export const formatDate = (dateString: string) => {
+	const date = new Date(dateString);
+	return date.toLocaleDateString("it-IT", {
+		day: "numeric",
+		month: "long",
+		year: "numeric",
+	});
+};
+
 export function markColor(mark: any) {
 	return mark == null
 		? "#18b2ff"
@@ -36,4 +45,33 @@ export function markBgColor(mark: any) {
 		: mark < 5
 		? "#ff4d4da2"
 		: "#3ce339aa";
+}
+
+export function isWeekend(date: Date) {
+	const day = date.getDay();
+	return day === 0 || day === 6;
+}
+
+export function calcolaMinutiMancanti(dataFuturaString: string): number {
+	// 1. Crea un oggetto Date per la data futura partendo dalla stringa
+	const dataFutura = new Date(dataFuturaString);
+
+	// 2. Crea un oggetto Date per il momento attuale
+	const adesso = new Date();
+
+	// 3. Calcola la differenza in millisecondi.
+	//    .getTime() restituisce i millisecondi passati dal 1° gennaio 1970
+	const differenzaInMillisecondi = dataFutura.getTime() - adesso.getTime();
+
+	// Se la differenza è negativa, la data è già passata
+	if (differenzaInMillisecondi < 0) {
+		console.log("La data specificata è già nel passato.");
+		return 0;
+	}
+
+	// 4. Converte i millisecondi in minuti
+	//    (1000 millisecondi in un secondo, 60 secondi in un minuto)
+	const minutiMancanti = Math.floor(differenzaInMillisecondi / (1000 * 60));
+
+	return minutiMancanti;
 }

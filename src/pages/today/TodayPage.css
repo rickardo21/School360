@@ -163,6 +163,7 @@
 .user-status {
 	padding: 10px 20px;
 	text-transform: capitalize;
+	/* background: orange; */
 }
 
 .badge-Ritardi {
@@ -178,6 +179,11 @@
 .badge-Uscita {
 	background: rgb(202, 47, 47);
 	color: red;
+}
+
+.badge-Presente {
+	background: #3ce33934;
+	color: #1b8919;
 }
 
 .no-lesson {
