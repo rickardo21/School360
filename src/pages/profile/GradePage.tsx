@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import {
 	IonPage,
 	IonHeader,
@@ -14,10 +14,12 @@ import {
 	IonButtons,
 	IonCard,
 	IonCardContent,
+	IonPopover,
 } from "@ionic/react";
 import { useClient } from "../../provider/clientProvider";
 import { Grade } from "../../types";
-import { markColor } from "../../utils/utils";
+import GradeCard from "../../components/profile/gradeCard";
+import { calcolaMedia, markColor } from "../../utils/utils";
 
 const GradePage: React.FC = () => {
 	const [segment, setSegment] = useState("tutti");
@@ -26,9 +28,14 @@ const GradePage: React.FC = () => {
 	const client = useClient();
 	const voti = client.UserModel!.grades.grades;
 
+	const materie = [...new Set(voti.map((voto) => voto.subjectDesc))];
+
+	const [selectedSub, setSelectedSub] = useState(0);
+	const [popoverOpen, setPopoverOpen] = useState(false);
+
 	return (
 		<IonPage>
-			<IonHeader translucent>
+			<IonHeader collapse="condense">
 				<IonToolbar>
 					<IonButtons slot="start">
 						<IonButton
@@ -37,13 +44,17 @@ const GradePage: React.FC = () => {
 							Back
 						</IonButton>
 					</IonButtons>
-					<IonTitle>Voti</IonTitle>
+
+					<IonTitle
+						id="popover-trigger"
+						onClick={() => setPopoverOpen(true)}>
+						{segment === "materia" ? materie[selectedSub] : "Voti"}
+					</IonTitle>
 				</IonToolbar>
 				<div className="segment">
 					<IonSegment
 						value={segment}
-						onIonChange={(e: any) => setSegment(e.detail.value!)}
-						mode="ios">
+						onIonChange={(e: any) => setSegment(e.detail.value!)}>
 						<IonSegmentButton value="tutti" mode="ios">
 							<IonLabel>Tutti i voti</IonLabel>
 						</IonSegmentButton>
@@ -57,31 +68,99 @@ const GradePage: React.FC = () => {
 				<div className="grade-container">
 					{segment == "tutti" ? (
 						voti.map((item: Grade, index) => {
-							return (
-								<div key={index} className="grade-card">
-									<div className="left-grade">
-										<div className="grade-sub">
-											{item.subjectDesc}
-										</div>
-										<div className="info-grade">
-											{item.componentDesc} -{" "}
-											{item.periodLabel}
-										</div>
-									</div>
-									<div
-										style={{
-											color: item.canceled
-												? "#18b2ff"
-												: markColor(item.decimalValue),
-										}}
-										className="right-grade">
-										{item.displayValue}
-									</div>
-								</div>
-							);
+							return <GradeCard item={item} index={index} />;
 						})
 					) : (
-						<div></div>
+						<>
+							<IonPopover
+								arrow={false}
+								animated={true}
+								translucent={true}
+								showBackdrop={true}
+								backdropDismiss={true}
+								isOpen={popoverOpen}
+								onDidDismiss={() => setPopoverOpen(false)}
+								trigger={"popover-trigger"}
+								// size="cover"
+								side="bottom" // Per posizionarlo sotto il bottone
+								alignment="center" // Centra rispetto al bottone
+							>
+								<IonList>
+									{materie.map((m: string, index) => (
+										<IonItem
+											className="listItem"
+											onClick={() => {
+												setPopoverOpen(false);
+												setSelectedSub(index);
+											}}>
+											{m}
+										</IonItem>
+									))}
+								</IonList>
+							</IonPopover>
+							<div className="materia--container">
+								<div className="materia--votiSection">
+									<div className="media--inner-row ">
+										<span className="media-voti">
+											{calcolaMedia({
+												grades: voti.filter(
+													(voto) =>
+														voto.subjectDesc ===
+														materie[selectedSub]
+												),
+											})}
+										</span>
+										<span className="tot-voti">/ 10</span>
+									</div>
+									<span className="materia--votiSection--title">
+										Voti
+									</span>
+									{voti
+										.filter(
+											(voto) =>
+												voto.subjectDesc ===
+												materie[selectedSub]
+										)
+										.map((v, index) => {
+											return (
+												<div
+													key={index}
+													className="materia-grade">
+													<div
+														style={{
+															color: v.canceled
+																? "#18b2ff"
+																: markColor(
+																		v.decimalValue
+																  ),
+														}}
+														className="materia-grade--left">
+														{v.displayValue}
+													</div>
+													<div className="materia-grade--right">
+														<span className="type">
+															{v.componentDesc}
+														</span>
+														<div className="materia-grade--bottom">
+															<div className="status">
+																<span>
+																	{v.evtDate}
+																</span>
+																<span>-</span>
+																<span>
+																	{
+																		v.periodLabel
+																	}
+																</span>
+															</div>
+														</div>
+													</div>
+												</div>
+											);
+										})}
+								</div>
+							</div>
+						</>
 					)}
 				</div>
 			</IonContent>

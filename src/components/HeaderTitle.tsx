@@ -2,6 +2,7 @@ import {
 	IonButton,
 	IonButtons,
 	IonContent,
+	IonDatetime,
 	IonHeader,
 	IonIcon,
 	IonModal,
@@ -17,6 +18,11 @@ interface HeaderProps {
 }
 
 const HeaderTitle: React.FC<HeaderProps> = ({ title, hasModal }) => {
+	const modal = useRef<HTMLIonModalElement>(null);
+	const [value, setValue] = useState<string | number | undefined>(
+		"javascript"
+	);
+
 	return (
 		<>
 			<IonHeader collapse="condense">
@@ -25,6 +31,7 @@ const HeaderTitle: React.FC<HeaderProps> = ({ title, hasModal }) => {
 						id={hasModal ? "modalOpener" : undefined}
 						style={{
 							fontSize: "3rem",
+							textTransform: "Capitalize",
 							lineHeight: "1.2",
 							cursor: "pointer",
 							userSelect: "none",
@@ -36,7 +43,13 @@ const HeaderTitle: React.FC<HeaderProps> = ({ title, hasModal }) => {
 					</IonTitle>
 				</IonToolbar>
 			</IonHeader>
-			{/* modal da rivedere */}
+			<IonModal ref={modal} trigger="modalOpener" initialBreakpoint={0.4}>
+				<IonContent>
+					<IonDatetime
+						presentation="date"
+						preferWheel={true}></IonDatetime>
+				</IonContent>
+			</IonModal>
 		</>
 	);
 };

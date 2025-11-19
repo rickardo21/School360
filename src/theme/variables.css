@@ -24,6 +24,9 @@ http://ionicframework.com/docs/theming/ */
 	--radius-modal: 14px;
 	--radius-card: 12px;
 	--bg: rgba(242, 242, 247, 1);
+	/* --bg: rgba(28, 28, 230, 1); */
+
+	--picker: 242, 242, 247;
 
 	--opposite: rgba(0, 0, 0, 1);
 
@@ -67,6 +70,9 @@ http://ionicframework.com/docs/theming/ */
 		--opposite: rgba(255, 255, 255, 1);
 
 		--bg: rgba(28, 28, 30, 1);
+		/* --bg: rgba(28, 28, 230, 1); */
+
+		--picker: 28, 28, 30;
 
 		--bg-success: rgba(48, 209, 88, 0.15);
 		--color-success: rgba(48, 209, 88, 1);
@@ -117,6 +123,13 @@ ion-app {
 	overflow: hidden;
 }
 
+ion-picker,
+ion-datetime {
+	margin-bottom: var(--ion-safe-area-bottom);
+	--fade-background-rgb: var(--picker);
+	--background: var(--bg-color);
+}
+
 ion-page {
 	--background: var(--bg-color);
 }
@@ -151,9 +164,15 @@ ion-content.login-content::part(scroll) {
 /* Header & Toolbar */
 ion-header,
 ion-toolbar {
-	--background: var(--bg-color);
-	--color: var(--accent-color);
-	--border-color: var(--bg-color);
+	/* --background: var(--bg-color); */
+	/* --background: #e7d121; */
+	/* --color: var(--accent-color); */
+	/* --border-color: var(--bg-color); */
+	--background: #0000;
+}
+
+.segment {
+	background: #0000;
 }
 
 .toast-success {
@@ -166,7 +185,7 @@ ion-toolbar {
 }
 
 ion-title {
-	--background: var(--bg-color);
+	--background: #e7d121;
 	--color: var(--accent-color);
 }
 
@@ -177,7 +196,9 @@ ion-card {
 	border-radius: var(--radius-card);
 }
 
-.grade-card {
+.grade-card,
+.timeTableCard,
+.materia-grade {
 	background: var(--color-gray-50);
 	border-radius: var(--radius-card);
 }
@@ -199,7 +220,8 @@ ion-item {
 	color: var(--color-gray-500);
 }
 
-.divider--hour .divider--hour-line {
+.divider--hour .divider--hour-line,
+.divider--hour-line-timeTable {
 	background: var(--color-gray-500);
 }
 
@@ -256,17 +278,6 @@ ion-header[collapse="condense"] ion-toolbar {
 ion-header[collapse="condense"] ion-title[size="large"] {
 	line-height: 1.2; /* Migliora l'allineamento */
 }
-
-/* Modal styling */
-/* ion-modal {
-	--border-radius: var(--radius-modal); 
-	 --box-shadow: var(--shadow-modal);
-} */
-
-/* ion-modal::part(backdrop) {
-	background: rgba(0, 0, 0, 0.4);
-	backdrop-filter: blur(10px);
-} */
 
 /* Badge styling */
 ion-badge {

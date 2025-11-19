@@ -1,5 +1,12 @@
 import React, { createContext, useContext, useMemo, ReactNode } from "react";
-import { Absences, Grades, Lessons, User, UserModelFullOfInfo } from "../types";
+import {
+	Absences,
+	Grades,
+	Lessons,
+	TimetableGroupedByDay,
+	User,
+	UserModelFullOfInfo,
+} from "../types";
 import { Storage } from "@ionic/storage";
 
 interface ApiResponse<T> {
@@ -13,7 +20,7 @@ interface LoginData {
 }
 
 class Client {
-	// private MAIN_URL = "http://192.168.1.104:8080/";
+	// private MAIN_URL = "http://192.168.1.119:8080/";
 	private MAIN_URL = "https://backendschool360.fly.dev/";
 	public UserModel: UserModelFullOfInfo | null = null;
 
@@ -23,6 +30,21 @@ class Client {
 
 	public setUserModel(data: UserModelFullOfInfo) {
 		this.UserModel = data;
+	}
+
+	public async getTimeTable(room: string) {
+		const classname = room;
+
+		const response = await this.sendRequest<
+			ApiResponse<TimetableGroupedByDay>
+		>("timetable", "POST", {
+			className: classname,
+		});
+
+		const store = new Storage();
+		await store.create();
+
+		store.set("TimeTable", response.data);
 	}
 
 	public async login(data: LoginData) {

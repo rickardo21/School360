@@ -165,3 +165,11 @@ export type UserModelFullOfInfo = {
 	compiti: Compiti;
 	todaystatus: absence;
 };
+
+interface LessonDetails {
+	time: string;
+	subject: string;
+	classroom: string;
+	duration: number;
+}
+export type TimetableGroupedByDay = Record<string, LessonDetails[]>;

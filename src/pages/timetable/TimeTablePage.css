@@ -1,0 +1,119 @@
+.my-swiper,
+.my-slide {
+	width: 100%;
+	height: auto;
+}
+
+.my-swiper {
+	--padding-bottom: 40px;
+}
+
+/* Centra il contenuto all'interno di ogni slide (opzionale) */
+.my-slide {
+	padding: 10px 20px;
+	display: flex;
+	align-items: center;
+	flex-direction: column;
+	gap: 10px;
+}
+
+.timeTable-container {
+	width: 100%;
+	height: 100%;
+	padding: 10px 20px;
+}
+
+.divider--hour-timeTable {
+	width: 100%;
+	padding: 10px 0px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	opacity: 0.4;
+	gap: 10px;
+	/* background: orange; */
+}
+
+.divider--hour-line-timeTable {
+	height: 1px;
+	flex: 1;
+	opacity: 0.4;
+}
+
+.timeTable-content {
+	width: 100%;
+	height: 100%;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+}
+
+.timeTable-content span {
+	font-size: 16px;
+	padding: 20px;
+	text-transform: capitalize;
+	font-weight: 500;
+}
+
+.btn-timeTable {
+	width: 200px !important;
+	text-transform: capitalize;
+	margin: 0 !important;
+}
+
+.no-fermi {
+	padding: 0 !important;
+	text-align: center;
+	text-transform: none !important;
+	width: 80%;
+}
+
+.timeTableCard {
+	padding: 20px;
+	width: 100%;
+	border-radius: 12px;
+	display: flex;
+	justify-content: center;
+	flex-direction: row;
+	position: relative;
+}
+
+.left--timeTableCard {
+	flex: 1;
+}
+
+.right--timeTableCard {
+	width: 30%;
+	display: flex;
+	align-items: center;
+	justify-content: flex-end;
+	font-size: 16px;
+	font-weight: 700;
+}
+
+.bottom {
+	margin-top: 10px;
+	font-size: 14px;
+	display: flex;
+	align-items: center;
+	justify-content: flex-start;
+	gap: 10px;
+}
+
+.duration {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 4px;
+}
+
+.sub--timeTableCard {
+	font-weight: 600;
+	text-transform: capitalize;
+}
+
+.timeTable-modal {
+	--height: auto;
+	align-items: end;
+}

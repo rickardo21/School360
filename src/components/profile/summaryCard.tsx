@@ -13,6 +13,8 @@ import avatar from "/avatar.png";
 import "../../pages/profile/ProfilePage.css";
 import { useClient } from "../../provider/clientProvider";
 import { calcolaMedia, markBgColor } from "../../utils/utils";
+import { useEffect, useState } from "react";
+import { Storage } from "@ionic/storage";
 
 const SummaryCard: React.FC = () => {
 	// const data = userDummyData;
@@ -26,6 +28,22 @@ const SummaryCard: React.FC = () => {
 		subject: client.UserModel!.grades.grades[0].subjectDesc,
 		floatValue: client.UserModel!.grades.grades[0].decimalValue,
 	};
+
+	const [userClass, setUserClass] = useState("");
+
+	useEffect(() => {
+		const getClass = async () => {
+			const store = new Storage();
+			await store.create();
+			let room = await store.get("userClass");
+
+			if (room) room = room.replace(/\s/g, "");
+
+			setUserClass(room);
+		};
+
+		getClass();
+	}, []);
 
 	console.log(data);
 
@@ -53,7 +71,7 @@ const SummaryCard: React.FC = () => {
 							<div className="text-container--column-dx">
 								<span className="label">classe</span>
 								<span className="name class">
-									{data?.class ?? ""}
+									{userClass ? userClass : ""}
 								</span>{" "}
 								{/* api call */}
 							</div>

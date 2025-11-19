@@ -1,27 +1,15 @@
 import {
-	IonCard,
 	IonContent,
 	IonHeader,
-	IonIcon,
-	IonItem,
-	IonLabel,
-	IonModal,
 	IonPage,
-	IonRefresher,
-	IonRefresherContent,
 	IonTitle,
 	IonToolbar,
-	useIonViewWillEnter,
 } from "@ionic/react";
 import "./TodayPage.css";
-import HeaderTitle from "../../components/HeaderTitle";
-import { Lesson, Lessons } from "../../types";
-import { useEffect, useRef, useState } from "react";
-import { LessonCard } from "../../components/today/lessonsCard";
 import { useClient } from "../../provider/clientProvider";
-import { timeOutline } from "ionicons/icons";
 import { isWeekend } from "../../utils/utils";
 import LessonSection from "../../components/today/lessonSection";
+import HeaderTitle from "../../components/HeaderTitle";
 
 const TodayPage: React.FC = () => {
 	const client = useClient();
@@ -46,7 +34,7 @@ const TodayPage: React.FC = () => {
 
 	return (
 		<IonPage>
-			<HeaderTitle title="Today" />
+			<HeaderTitle title="Today" hasModal />
 			<IonContent fullscreen>
 				{statusText && (
 					<div className={`user-status `}>
@@ -55,7 +43,8 @@ const TodayPage: React.FC = () => {
 						</span>
 					</div>
 				)}
-				<LessonSection />;
+
+				<LessonSection />
 			</IonContent>
 		</IonPage>
 	);

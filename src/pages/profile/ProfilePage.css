@@ -233,8 +233,8 @@
 	width: 30%;
 	display: flex;
 	align-items: center;
-	justify-content: center;
-	font-size: 4rem;
+	justify-content: flex-end;
+	font-size: 3rem;
 	font-weight: 900;
 	text-transform: uppercase;
 	opacity: 0.7;
@@ -259,4 +259,84 @@
 
 .segment {
 	padding: 20px;
+}
+
+/*--------------------------*/
+
+.materia--container {
+	display: flex;
+	align-items: flex-start;
+	justify-content: center;
+	flex-direction: column;
+	width: 100%;
+}
+
+.materia--votiSection {
+	width: 100%;
+}
+
+.materia-subDesc {
+	font-size: 2rem;
+	text-transform: capitalize;
+	font-weight: black;
+}
+
+.materia--votiSection {
+	display: flex;
+	align-items: flex-start;
+	justify-content: center;
+	gap: 10px;
+	flex-direction: column;
+}
+
+.materia--votiSection--title {
+	font-size: 1.5rem;
+	font-weight: 600;
+}
+
+.--materia-media {
+	margin: 0px 0 20px 0;
+}
+
+.materia-grade {
+	padding: 10px;
+	width: 100%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.materia-grade--left {
+	width: 30%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-size: 3rem;
+	font-weight: 900;
+	text-transform: uppercase;
+	opacity: 0.7;
+}
+
+.materia-grade--right {
+	margin-left: 30px;
+	flex: 1;
+	display: flex;
+	align-items: flex-start;
+	justify-content: center;
+	flex-direction: column;
+	gap: 5px;
+}
+
+.materia-grade--right .type {
+	font-size: 18px;
+	font-weight: 500;
+}
+
+.materia-grade--right .status {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 5px;
+	font-size: 14px;
+	opacity: 0.6;
 }

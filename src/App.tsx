@@ -1,24 +1,6 @@
-import { Redirect, Route } from "react-router-dom";
-import { useEffect, useState } from "react";
-import {
-	IonApp,
-	IonIcon,
-	IonLabel,
-	IonRouterOutlet,
-	IonTabBar,
-	IonTabButton,
-	IonTabs,
-	setupIonicReact,
-} from "@ionic/react";
+import { useEffect } from "react";
+import { IonApp, setupIonicReact } from "@ionic/react";
 import { IonReactRouter } from "@ionic/react-router";
-
-/* Page Import */
-import TodayPage from "./pages/today/TodayPage";
-import ProfilePage from "./pages/profile/ProfilePage";
-import TimeTablePage from "./pages/timetable/TimeTablePage";
-import SettingsPage from "./pages/settings/SettingsPage";
-import LoginPage from "./pages/login/LoginPage";
-import GradePage from "./pages/profile/GradePage";
 
 /* Core CSS required for Ionic components to work properly */
 import "@ionic/react/css/core.css";
@@ -36,29 +18,60 @@ import "@ionic/react/css/text-transformation.css";
 import "@ionic/react/css/flex-utils.css";
 import "@ionic/react/css/display.css";
 
-/* Icons import */
-import {
-	cogOutline,
-	libraryOutline,
-	newspaperOutline,
-	personOutline,
-} from "ionicons/icons";
-
 /* Ionic Dark Mode */
 import "@ionic/react/css/palettes/dark.system.css";
 
 /* Theme variables */
 import "./theme/variables.css";
 
-import { Storage } from "@ionic/storage";
-import { ClientProvider, useClient } from "./provider/clientProvider";
-import { UserModelFullOfInfo } from "./types";
-import { calcolaMinutiMancanti } from "./utils/utils";
+import { ClientProvider } from "./provider/clientProvider";
 import AppController from "./AppController";
 
 setupIonicReact();
 
 const App: React.FC = () => {
+	useEffect(() => {
+		// Selezioniamo entrambi i meta tag che ci servono
+		const metaThemeColor = document.querySelector(
+			'meta[name="theme-color"]'
+		);
+		const metaStatusBarStyle = document.querySelector(
+			'meta[name="apple-mobile-web-app-status-bar-style"]'
+		);
+
+		// Funzione che applica i colori e gli stili corretti
+		const applyTheme = (isDark: boolean) => {
+			if (!metaThemeColor || !metaStatusBarStyle) {
+				return; // Esce se i tag non sono trovati
+			}
+
+			if (isDark) {
+				// TEMA SCURO
+				metaThemeColor.setAttribute("content", "#1C1C1E"); // Sfondo nero/grigio scuro
+				metaStatusBarStyle.setAttribute("content", "black"); // Testo bianco
+			} else {
+				// TEMA CHIARO
+				metaThemeColor.setAttribute("content", "#F2F2F7"); // Il tuo sfondo viola
+				metaStatusBarStyle.setAttribute("content", "white"); // Testo bianco (perché il viola è scuro)
+			}
+		};
+
+		// Usiamo matchMedia per sapere qual è il tema attuale e per ascoltare i cambiamenti
+		const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
+
+		// 1. Applica il tema corretto al caricamento dell'app
+		applyTheme(mediaQuery.matches);
+
+		// 2. Aggiungi un "ascoltatore" che riesegue la funzione quando il tema cambia
+		const themeChangeHandler = (e: MediaQueryListEvent) =>
+			applyTheme(e.matches);
+		mediaQuery.addEventListener("change", themeChangeHandler);
+
+		// 3. Pulisci l'ascoltatore quando il componente viene smontato (importante!)
+		return () => {
+			mediaQuery.removeEventListener("change", themeChangeHandler);
+		};
+	}, []);
 	return (
 		<IonApp>
 			<ClientProvider>
