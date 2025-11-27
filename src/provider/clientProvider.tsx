@@ -4,7 +4,6 @@ import {
 	Grades,
 	Lessons,
 	TimetableGroupedByDay,
-	User,
 	UserModelFullOfInfo,
 } from "../types";
 import { Storage } from "@ionic/storage";

@@ -1,0 +1,16 @@
+.splash-title {
+	font-weight: 700;
+	font-size: 3rem;
+	padding: 10px;
+	text-transform: capitalize;
+}
+
+.splash-container {
+	height: 100%;
+	width: 100%;
+	display: flex;
+	align-items: center;
+	flex-direction: column;
+	gap: 20px;
+	justify-content: center;
+}

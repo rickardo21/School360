@@ -29,33 +29,25 @@ import AppController from "./AppController";
 
 setupIonicReact();
 
+export const applyTheme = (isDark: boolean) => {
+	const metaThemeColor = document.querySelector('meta[name="theme-color"]');
+	const metaStatusBarStyle = document.querySelector(
+		'meta[name="apple-mobile-web-app-status-bar-style"]'
+	);
+
+	if (!metaThemeColor || !metaStatusBarStyle) return;
+
+	if (isDark) {
+		metaThemeColor.setAttribute("content", "#1C1C1E");
+		metaStatusBarStyle.setAttribute("content", "black");
+	} else {
+		metaThemeColor.setAttribute("content", "#F2F2F7");
+		metaStatusBarStyle.setAttribute("content", "white");
+	}
+};
+
 const App: React.FC = () => {
 	useEffect(() => {
-		// Selezioniamo entrambi i meta tag che ci servono
-		const metaThemeColor = document.querySelector(
-			'meta[name="theme-color"]'
-		);
-		const metaStatusBarStyle = document.querySelector(
-			'meta[name="apple-mobile-web-app-status-bar-style"]'
-		);
-
-		// Funzione che applica i colori e gli stili corretti
-		const applyTheme = (isDark: boolean) => {
-			if (!metaThemeColor || !metaStatusBarStyle) {
-				return; // Esce se i tag non sono trovati
-			}
-
-			if (isDark) {
-				// TEMA SCURO
-				metaThemeColor.setAttribute("content", "#1C1C1E"); // Sfondo nero/grigio scuro
-				metaStatusBarStyle.setAttribute("content", "black"); // Testo bianco
-			} else {
-				// TEMA CHIARO
-				metaThemeColor.setAttribute("content", "#F2F2F7"); // Il tuo sfondo viola
-				metaStatusBarStyle.setAttribute("content", "white"); // Testo bianco (perché il viola è scuro)
-			}
-		};
-
 		// Usiamo matchMedia per sapere qual è il tema attuale e per ascoltare i cambiamenti
 		const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
 

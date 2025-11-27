@@ -8,7 +8,6 @@ import {
 	useIonViewWillLeave,
 	IonToast,
 	IonSpinner,
-	IonInputPasswordToggle,
 } from "@ionic/react";
 
 import "./LoginPage.css";

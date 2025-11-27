@@ -12,8 +12,6 @@ import {
 	IonItem,
 	IonButton,
 	IonButtons,
-	IonCard,
-	IonCardContent,
 	IonPopover,
 } from "@ionic/react";
 import { useClient } from "../../provider/clientProvider";
@@ -47,7 +45,11 @@ const GradePage: React.FC = () => {
 
 					<IonTitle
 						id="popover-trigger"
-						onClick={() => setPopoverOpen(true)}>
+						onClick={() => {
+							if (segment === "materia") {
+								setPopoverOpen(!popoverOpen);
+							}
+						}}>
 						{segment === "materia" ? materie[selectedSub] : "Voti"}
 					</IonTitle>
 				</IonToolbar>
@@ -81,7 +83,7 @@ const GradePage: React.FC = () => {
 								isOpen={popoverOpen}
 								onDidDismiss={() => setPopoverOpen(false)}
 								trigger={"popover-trigger"}
-								// size="cover"
+								size="auto"
 								side="bottom" // Per posizionarlo sotto il bottone
 								alignment="center" // Centra rispetto al bottone
 							>
@@ -93,7 +95,12 @@ const GradePage: React.FC = () => {
 												setPopoverOpen(false);
 												setSelectedSub(index);
 											}}>
-											{m}
+											<div
+												style={{
+													padding: "10px",
+												}}>
+												{m}
+											</div>
 										</IonItem>
 									))}
 								</IonList>

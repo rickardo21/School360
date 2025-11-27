@@ -60,12 +60,7 @@ const LessonSection: React.FC = () => {
 										<div className="divider--hour-line"></div>
 									</div>
 								)}
-								<LessonCard
-									index={index}
-									item={item}
-									hasHour={hasHour}
-									hour={ore}
-								/>
+								<LessonCard index={index} item={item} />
 								<IonModal
 									ref={modal}
 									trigger={`open-modal-${index}`}
